@@ -22,4 +22,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\OrderManagement.WebApi\OrderManagement.WebApi.csproj" />
+  </ItemGroup>
+
 </Project>

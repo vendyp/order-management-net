@@ -22,4 +22,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\OrderManagement.UnitTests\OrderManagement.UnitTests.csproj" />
+  </ItemGroup>
+
 </Project>

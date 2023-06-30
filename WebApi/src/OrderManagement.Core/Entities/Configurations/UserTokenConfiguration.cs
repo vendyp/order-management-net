@@ -6,6 +6,8 @@ public class UserTokenConfiguration : BaseEntityConfiguration<UserToken>
 {
     protected override void EntityConfiguration(EntityTypeBuilder<UserToken> builder)
     {
-        throw new NotImplementedException();
+        builder.HasKey(e => e.UserTokenId);
+        builder.Property(e => e.UserTokenId).ValueGeneratedNever();
+        builder.Property(e => e.RefreshToken).HasMaxLength(512);
     }
 }
