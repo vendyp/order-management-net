@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Identity.Client;
 using OrderManagement.Core.Abstractions;
 using OrderManagement.Infrastructure.Services;
 
@@ -13,6 +14,7 @@ public static class ServiceCollection
 
         services.AddSingleton(clockOptions)
             .AddSingleton<IClock, ClockService>();
+        services.AddScoped<IUserService, UserService>();
     }
 
     public static T GetOptions<T>(this IServiceCollection services, string sectionName) where T : new()
