@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
 using OrderManagement.Core.Abstractions;
 using OrderManagement.Core.Entities;
+using OrderManagement.WebApi;
 using OrderManagement.WebApi.Endpoints.Identity;
 using Shouldly;
 
@@ -88,7 +90,10 @@ public class SignInTests
     [MemberData(nameof(GetInvalidRequests))]
     public async Task SignIn_Given_InvalidRequest_ShouldReturn_BadRequest(SignInRequest request)
     {
-        var signIn = new SignIn(new Mock<IUserService>().Object, new Mock<IDbContext>().Object);
+        var signIn = new SignIn(
+            new Mock<IUserService>().Object,
+            new Mock<IDbContext>().Object,
+            new Mock<IAccessTokenBuilder>().Object);
 
         var result = await signIn.HandleAsync(request, CancellationToken.None);
 
@@ -104,6 +109,7 @@ public class SignInTests
     [Fact]
     public async Task SignIn_Given_CorrectRequest_With_InvalidEmail_ShouldReturn_BadRequest()
     {
+        var accessTokenBuilderMock = new Mock<IAccessTokenBuilder>();
         var userServiceMock = new Mock<IUserService>();
         userServiceMock.Setup(e =>
                 e.GetUserByUsernameAsync(
@@ -111,7 +117,10 @@ public class SignInTests
                     It.IsAny<CancellationToken>()))
             .ReturnsAsync((User?)null);
 
-        var signIn = new SignIn(userServiceMock.Object, new Mock<IDbContext>().Object);
+        var signIn = new SignIn(
+            userServiceMock.Object,
+            new Mock<IDbContext>().Object,
+            accessTokenBuilderMock.Object);
 
         var request = new SignInRequest
         {
@@ -162,7 +171,10 @@ public class SignInTests
         userServiceMock.Setup(e => e.VerifyPassword(request.Password, dummyUser.Salt, dummyUser.HashedPassword))
             .Returns(false);
 
-        var signIn = new SignIn(userServiceMock.Object, new Mock<IDbContext>().Object);
+        var signIn = new SignIn(
+            userServiceMock.Object,
+            new Mock<IDbContext>().Object,
+            new Mock<IAccessTokenBuilder>().Object);
 
         var result = await signIn.HandleAsync(request, CancellationToken.None);
 
@@ -220,7 +232,14 @@ public class SignInTests
         userServiceMock.Setup(e => e.VerifyPassword(request.Password, It.IsAny<string>(), It.IsAny<string>()))
             .Returns(true);
 
-        var signIn = new SignIn(userServiceMock.Object, dbContextMock.Object);
+        var accessTokenBuilderMock = new Mock<IAccessTokenBuilder>();
+        accessTokenBuilderMock.Setup(e => e.CreateToken(It.IsAny<List<Claim>>()))
+            .Returns(new JsonWebToken());
+
+        var signIn = new SignIn(
+            userServiceMock.Object,
+            dbContextMock.Object,
+            accessTokenBuilderMock.Object);
 
         user.ShouldBeNull();
 

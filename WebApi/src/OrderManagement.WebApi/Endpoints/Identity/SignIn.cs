@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
 using OrderManagement.Core.Abstractions;
 using OrderManagement.Core.Entities;
 using OrderManagement.WebApi.Dto;
@@ -10,11 +11,13 @@ public class SignIn : BaseEndpoint<SignInRequest, SignInDto>
 {
     private readonly IUserService _userService;
     private readonly IDbContext _dbContext;
+    private readonly IAccessTokenBuilder _accessTokenBuilder;
 
-    public SignIn(IUserService userService, IDbContext dbContext)
+    public SignIn(IUserService userService, IDbContext dbContext, IAccessTokenBuilder accessTokenBuilder)
     {
         _userService = userService;
         _dbContext = dbContext;
+        _accessTokenBuilder = accessTokenBuilder;
     }
 
     [HttpPost("sign-in")]
@@ -51,6 +54,20 @@ public class SignIn : BaseEndpoint<SignInRequest, SignInDto>
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        return new SignInDto();
+        var list = new List<Claim>();
+        foreach (var item in user.UserRoles)
+            list.Add(new Claim(ClaimTypes.Role, item.RoleId));
+
+        list.Add(new Claim(ClaimTypes.Name, user.UserId.ToString()));
+
+        var jsonWebToken = _accessTokenBuilder.CreateToken(list);
+
+        return new SignInDto
+        {
+            UserId = user.UserId,
+            AccessToken = jsonWebToken.AccessToken,
+            Expiry = jsonWebToken.Expiry,
+            RefreshToken = userToken.RefreshToken
+        };
     }
 }
