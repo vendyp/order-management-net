@@ -27,6 +27,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApp", "WebApp", "{9E4D2A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderManagament.Cms", "WebApp\OrderManagament.Cms\OrderManagament.Cms.csproj", "{1FAA1A67-96E8-480D-A78F-29F01E6F1ABD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderManagement.FunctionalTests", "WebApi\tests\OrderManagement.FunctionalTests\OrderManagement.FunctionalTests.csproj", "{EB42AE11-E438-474D-BD66-372B71B6DF2A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -64,6 +66,10 @@ Global
 		{1FAA1A67-96E8-480D-A78F-29F01E6F1ABD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1FAA1A67-96E8-480D-A78F-29F01E6F1ABD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1FAA1A67-96E8-480D-A78F-29F01E6F1ABD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB42AE11-E438-474D-BD66-372B71B6DF2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB42AE11-E438-474D-BD66-372B71B6DF2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB42AE11-E438-474D-BD66-372B71B6DF2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB42AE11-E438-474D-BD66-372B71B6DF2A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{8CCD2FB5-8215-4497-A29F-E53EED9DA0B9} = {3BD49A05-C27F-4413-B5C9-D045BE7D547C}
@@ -75,5 +81,6 @@ Global
 		{528137E7-D433-427A-8B95-597655DF7F58} = {071AD6F3-2EC2-4D19-B1D9-6C6790E9720F}
 		{FB05C853-3C17-4743-85DC-5FF9E51B8BFA} = {071AD6F3-2EC2-4D19-B1D9-6C6790E9720F}
 		{1FAA1A67-96E8-480D-A78F-29F01E6F1ABD} = {9E4D2AF9-7DEE-4050-8736-93BC71EA9BEC}
+		{EB42AE11-E438-474D-BD66-372B71B6DF2A} = {071AD6F3-2EC2-4D19-B1D9-6C6790E9720F}
 	EndGlobalSection
 EndGlobal
